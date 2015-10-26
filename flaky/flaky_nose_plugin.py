@@ -13,7 +13,7 @@ from flaky._flaky_plugin import _FlakyPlugin
 
 # Create global ListProxy object for multiprocessing support
 MULTIPROCESS_MANAGER = multiprocessing.Manager()
-MP_STREAM = MULTIPROCESS_MANAGER.list()
+MP_STREAM = MULTIPROCESS_MANAGER.list()  # pylint: disable=no-member
 
 
 class FlakyPlugin(_FlakyPlugin, Plugin):

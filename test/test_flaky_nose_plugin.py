@@ -1,7 +1,6 @@
 # coding: utf-8
 
 from __future__ import unicode_literals
-from io import StringIO
 import mock
 from mock import MagicMock, Mock, patch
 from flaky import defaults
@@ -387,12 +386,14 @@ class TestFlakyPlugin(TestCase):
         expected_stream_calls = ''.join([
             self._mock_test_method_name +
             " passed {0} out of the required {1} times. ".format(
-                current_passes + 1, min_passes,
+                current_passes + 1,
+                min_passes,
             ),
         ])
         if expected_plugin_handles_success:
+            _rerun_text = 'Running test again until it passes {0} times.\n'
             expected_test_case_calls.append(('__hash__',))
-            expected_stream_calls += 'Running test again until it passes {0} times.\n'.format(
+            expected_stream_calls += _rerun_text.format(
                 min_passes,
                 )
         else:
