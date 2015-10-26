@@ -301,5 +301,10 @@ class StringIOProxy(object):
                 self.proxy.insert(len(self.proxy), i)
 
     def write(self, content):
-        content.strip('\n')
+        """
+        This assumes it is receiving one string and must store it as
+        such in the proxy list item. It will only strip '\n' at the
+        end.
+        """
+        content.rstrip('\n')
         self.proxy.append(content)

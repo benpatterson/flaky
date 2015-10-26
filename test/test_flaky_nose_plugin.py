@@ -422,3 +422,25 @@ class TestFlakyPlugin(TestCase):
                 mock.call.write('\n===End Flaky Test Report===\n'),
             ],
         )
+
+class TestStringIOProxy(TestCase):
+    def setUp(self):
+        super(TestStringIOProxy, self).setUp()
+        self.proxy_object = StringIOProxy()
+        # override global MP_STREAM (which is a listProxy) for a list object
+        self.proxy_object.proxy = []
+
+    def test_string_io_proxy_write(self):
+        """
+        The proxy's 'write' function assumes it is seeing one line.
+        """
+        self.proxy_object.write("line1\nstill-line1\n")
+        self.assertEqual(len(self.proxy_object.proxy), 1)
+
+    def test_string_io_proxy_writelines(self):
+        """
+        The proxy will interpret individual items in writelines as
+        new lines, which are stored as separate items
+        """
+        self.proxy_object.writelines(['line1\nline2\n', 'line3\n'])
+        self.assertEqual(len(self.proxy_object.proxy), 3)
